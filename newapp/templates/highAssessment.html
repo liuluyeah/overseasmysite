@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+{% load staticfiles %}
+<head>
+	<meta charset="utf-8" />
+	<title>Preliminary Assessment - Formoid jquery form</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body class="blurBg-false" style="background-color:#EBEBEB">
+
+<!-- Start Formoid form-->
+<link rel="stylesheet" href="{% static 'form/formoid-solid-green.css' %}" type="text/css" />
+<script type="text/javascript" src="{% static 'form/jquery.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'form/jquery-3.1.1.js' %}"></script>
+<script type="text/javascript" src="{% static 'form/formoid-solid-green.js' %}"></script>
+
+<script>
+$(document).ready(function() {
+    $("#id_intention_country").change(function () {
+        var targetCountrystr = $(this).val();
+        $("#id_intention_school").empty();
+        if (targetCountrystr=="0") {
+            $("#id_intention_school").append($("<option value='-1'>请选择国家</option>"));
+            return;
+        }
+        var targetCountryName = $("#id_intention_country").val().toString();
+        var options = {
+            url: "{% url 'newapp:highCountry'%}",
+            type: "POST",
+            data: {
+                targetCountry: targetCountryName
+            },
+            dataType:"json",
+            traditional: true,
+            async: true,
+            success: function (data) {
+
+                $("#id_intention_school").append($("<option value='0'>" + "--- 学校 ---"+ "</option>"));
+
+                var universitynName = data.universityName;
+
+                for (var i = 0; i < universitynName.length; i++) {
+                    $("#id_intention_school").append($("<option value='" + universitynName[i] + "'>" + universitynName[i] + "</option>"));
+                }
+                if (universityName.length == 0) {
+                    $("#id_intention_school").append($("<option value='-1'>请选择国家</option>"));
+                }
+            },
+            error: function (data) {
+            }
+        }
+        $.ajax(options);
+    });
+
+    $("#target_university").change(function(){
+        university=$("#target_university").val();
+        $("#intention_schoolName").val(university);
+        n=$("#intention_schoolName").val();
+    });
+
+});
+</script>
+
+<form action="{% url 'newapp:highResult' %}" class="formoid-solid-green" style="background-color:#FFFFFF;font-size:14px;font-family:'Roboto',Arial,Helvetica,sans-serif;color:#34495E;max-width:960px;min-width:150px" method="POST">
+    <div class="title"><h2>高中生留学申请测评</h2>
+         &nbsp;&nbsp;&nbsp; &nbsp;
+    </div>
+	<div class="element-separator"><hr><h3 class="section-break-title">基本信息</h3></div>
+
+	<div class="element-name">
+        <span class="nameFirst">{{ form.first_name }}<span class="icon-place"></span></span><span
+            class="nameLast">{{ form.last_name }}<span class="icon-place"></span></span>
+    </div>
+
+
+	<div class="element-phone">
+        <label class="title"><span class="required">*</span></label>
+        <div class="item-cont">
+            {{ form.cell_phone_number }}
+            <span class="icon-place"></span>
+        </div>
+    </div>
+	<div class="element-separator"><hr><h3 class="section-break-title">你的意向</h3></div>
+
+	<div class="element-select">
+
+        <div class="item-cont">
+            <div class="large">
+            <span>
+                {{ form.intention_country }}
+                <span class="icon-place"></span>
+            </span>
+            </div>
+        </div>
+    </div>
+
+	<div class="element-select">
+        <div class="item-cont">
+            <div class="large"><span>
+                <select name="intention_school" id="id_intention_school" >
+                        <option value='0'>---学校---</option>
+                </select>
+        <span class="icon-place"></span></span></div>
+        </div>
+    </div>
+
+	<div class="element-separator"><hr><h3 class="section-break-title">学业成绩</h3></div>
+
+	 <div class="element-select">
+        <label class="title"><span class="required" >*</span></label>
+        <div class="item-cont">
+            <div class="large">
+            <span>
+                {{ form.graduate_school }}
+                <span class="icon-place"></span>
+            </span>
+            </div>
+        </div>
+    </div>
+
+
+	<div class="element-input">
+        <label class="title"><span class="required">*</span></label>
+        <div class="item-cont">
+            {{ form.GPA_middle }}
+            <span class="icon-place"></span>
+        </div>
+    </div>
+
+    <div class="element-input">
+        <label class="title"><span class="required">*</span></label>
+        <div class="item-cont">
+            {{ form.GPA_high }}
+            <span class="icon-place"></span>
+        </div>
+    </div>
+
+
+	<div class="element-separator"><hr><h3 class="section-break-title">语言成绩</h3></div>
+
+	<div class="element-separator">请输入你的SAT成绩：</div>
+	<div class="element-input">
+        <label class="title"><span class="required">*</span></label>
+	   <div class="item-cont">
+	      {{ form.score_SAT }}
+		  <span class="icon-place"></span>
+	   </div>
+	</div>
+
+	<div class="element-separator">请输入你的TOEFL成绩：</div>
+	<div class="element-input">
+        <label class="title"><span class="required">*</span></label>
+	    <div class="item-cont">
+	      {{ form.score_TOEFL }}
+		  <span class="icon-place"></span>
+	   </div>
+	</div>
+
+	<div class="element-separator"><hr><h3 class="section-break-title">专业特长</h3></div>
+
+    <div class="element-radio"><label class="title">是否具备专业特长（例如体育、美术、竞赛获奖等）</label>
+        {% for b in form.talentStudent %}
+            <div class="column column2">
+                <label for="{{ b.id_for_label }}">
+                    {{ b.tag }}
+                    <span>{{ b.choice_label }}</span>
+                </label>
+            </div>
+            <span class="clearfix"></span>
+        {% endfor %}
+    </div>
+	<div class="element-textarea"><label class="title"></label><div class="item-cont">
+       {{ form.awards }}
+        <span class="icon-place"></span></div></div>
+
+{#	<div class="element-textarea"><label class="title"></label><div class="item-cont">#}
+{#       {{ form.research }}#}
+{#        <span class="icon-place"></span></div></div>#}
+{##}
+{#	<div class="element-textarea"><label class="title"></label><div class="item-cont">#}
+{#       {{ form.art }}#}
+{#        <span class="icon-place"></span></div></div>#}
+
+
+	<div class="element-separator"><hr><h3 class="section-break-title">推荐信</h3></div>
+
+	<div class="element-separator"><span class="required">* &nbsp;</span></div>
+	<div class="element-input"><label class="title"></label><div class="item-cont">
+        {{ form.recommendations }}
+        <span class="icon-place"></span></div></div>
+
+
+<div class="submit"><input type="submit" value="Submit"/></div>
+</form>
+<p class="frmd"><a href="http://formoid.com/v29.php">html contact form</a> Formoid.com 2.9</p>
+<script type="text/javascript" src="formoid4_files/formoid1/formoid-solid-green.js"></script>
+
+<input type="hidden" id="intention_schoolName" name="intention_schoolName" value="">
+<!-- Stop Formoid form-->
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

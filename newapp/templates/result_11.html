@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load staticfiles %}
+<head>
+    <meta charset="UTF-8">
+    <title>The Preliminary Assessment Results </title>
+
+     <style>
+        .table th, .table td {
+            text-align: center;
+            height:38px;
+         }
+    </style>
+
+</head>
+<body>
+  <link rel="stylesheet" href="{% static 'form/formoid-solid-green.css' %}" type="text/css" />
+  <link href="{% static 'css/bootstrap.css'%}" rel="stylesheet"/>
+  <link href="{% static 'css/bootstrap.min.css'%}"/>
+  <script src = "{% static 'js/jquery-3.1.1.js'%}"></script>
+  <script src = "{% static 'js/bootstrap.js'%}"></script>
+  <script src = "{% static 'js/bootstrap.min.js'%}"></script>
+  <script type="text/javascript" src="{% static 'form/jquery.min.js'%}"></script>
+  <script type="text/javascript" src="{% static 'form/formoid-solid-green.js'%}"></script>
+
+  <form class="formoid-solid-green" style="background-color:#FFFFFF;font-size:19px;font-family:'Roboto',Arial,Helvetica,sans-serif;color:#34495E;max-width:960px;min-width:150px" method="post"><div class="title"><h2>留学申请测评结果</h2></div>
+	<div class="element-separator" style="min-height:500px">
+    <label class="title">
+        <h1 > {{ studentFName }}{{ studentLName }}同学，欢迎你使用留学预测评系统！</h1>
+        你申请的学校为: &nbsp;<font color="#a52a2a">{{ intention_school }}</font>，该校的{{ intention_major }}专业在其国内排名第{{ rank_major }}，该校的综合排名为第{{ rank_total }}。<br>
+        基于大数据分析，我们预测，你的申请结果为：
+    {% ifequal recommendation 0 %}
+         {% ifequal result 0 %}
+         <font color="#a52a2a">未通过</font>，你的语言成绩(雅思/托福)太低，达不到所申请学校的入学要求，强烈建议你刷新语言成绩！
+         {% endifequal %}
+
+         {% ifequal result 1 %}
+         <font color="#a52a2a">未通过</font>，你的GPA太低，未达到所申请院校的基本入学要求，强烈建议你尽量提高GPA，以便达到基本要求，
+             并在其他弱项上加以改善，提升你的综合实力！
+        {% endifequal %}
+
+        {% ifequal result 10 %}
+         <font color="#a52a2a">未通过</font>，你的GPA和语言成绩都太低，未能达到一般的入学要求。一般院校对语言和绩点都有硬性要求，为了
+            增加你申请成功的概率，强烈建议你提升这两方面的成绩！
+         {% endifequal %}
+
+        {% ifequal result 2 %}
+         <font color="#a52a2a">通过</font>，你达到了目标院校的基本要求，但是在往年该校的录取数据中处于一般水平，
+            仍然需要加强弱项以提高申请成功的概率，继续加油！
+        {% endifequal %}
+
+        {% ifequal result 3 %}
+        <font color="#a52a2a">不通过</font>，你虽然没有通过申请，但是你的条件与目标院校的要求相差不大，
+            如果在弱项上加以改善有很大的可能申请成功，建议可以冲刺一下！
+        {% endifequal %}
+
+        {% ifequal result 4 %}
+         <font color="#a52a2a">不通过</font>，根据分析，你的综合条件尚未达到目标院校的录取标准，很遗憾，仍需努力！
+        {% endifequal %}
+
+        {% ifequal result 5 %}
+        <font color="#a52a2a">优秀</font>，根据分析你的综合条件很优秀，有一些强项很有竞争优势，成功申请目标院校的可能性很大！
+        {% ifequal no_high 0 %}
+        鉴于你的条件优秀，我们建议你可以选择更好的院校，比如
+            {% for u in university_eg %}
+               <font color="#a52a2a">{{ u.name }} </font>
+            {% endfor %}
+            等等。
+        {%endifequal%}
+        {% endifequal %}
+        <br><br>
+    {% endifequal %}
+    {% ifequal recommendation 1 %}
+         {% ifequal result 0 %}
+         <font color="#a52a2a">未通过</font>，你的语言成绩(雅思/托福)太低，达不到所申请学校的入学要求，强烈建议你刷新语言成绩！提高语言
+             成绩加上导师推荐这样一个很有利的条件，相信你申请成功的机会很大，加油！
+         {% endifequal %}
+
+         {% ifequal result 1 %}
+         <font color="#a52a2a">未通过</font>，你的GPA太低，未达到所申请院校的基本入学要求，强烈建议你尽量提高GPA，以便达到基本要求。
+             另外，导师推荐是一个很有利的条件，如果能够提高GPA，相信你申请成功的机会很大，加油！
+        {% endifequal %}
+
+        {% ifequal result 10 %}
+         <font color="#a52a2a">未通过</font>，你的GPA和语言成绩都太低，未能达到一般的入学要求。一般院校对语言和绩点都有硬性要求，即使你有导师的
+            推荐也可能会被拒绝。因此强烈建议你提升这两方面的成绩，好好利用牛导推荐这个有利条件！
+         {% endifequal %}
+
+        {% ifequal result 2 %}
+         <font color="#a52a2a">通过</font>，经过分析发现，你达到了目标院校的基本要求，但是在往年该校的录取数据中处于一般水平。
+            但是你有大牛推荐，这是一个非常有力的条件。我们预测你基本可以通过申请。仍然需要加强弱项以提高申请成功的概率，继续加油！
+        {% endifequal %}
+
+        {% ifequal result 3 %}
+        <font color="#a52a2a">通过</font>，经过分析发现，你的条件与目标院校的要求相差不大，并且你有大牛推荐，这是一个非常有力的条件。
+            如果在弱项上加以改善有很大的可能申请成功，建议冲刺一下！
+        {% endifequal %}
+
+         {% ifequal result 4 %}
+         <font color="#a52a2a">通过</font>，根据分析，你的综合条件很弱。但是由于你有大牛推荐，这是一个非常有力的条件，
+               因此我们预测你基本可以通过申请。但是你仍然需要加强弱项以进一步提高申请成功的概率，继续加油！
+        {% endifequal %}
+
+        {% ifequal result 5 %}
+        <font color="#a52a2a">优秀</font>，根据分析你的综合条件很优秀，有一些强项很有竞争优势。另外你有大牛推荐，这是一个非常有力的条件,
+            成功申请目标院校的可能性很大,加油！
+        {% ifequal no_high 0 %}
+        鉴于你的条件优秀，我们建议你可以选择更好的院校，比如
+            {% for u in university_eg %}
+               <font color="#a52a2a">{{ u.name }} </font>
+            {% endfor %}
+            等等。
+        {%endifequal%}
+        {% endifequal %}
+        <br><br>
+    {% endifequal %}
+
+        <strong>以下是对您情况的具体分析：</strong><br><br>
+        {% ifequal gu_level 1%}
+         通过对你所填申请信息的评估，我们发现你的本科学校是国内顶尖高校,在申请中很占优势。
+        {% endifequal %}
+        {% ifequal gu_level 2%}
+         通过对你所填申请信息的评估，我们发现你的本科学校是国内重点高校,在申请中很占优势。
+        {% endifequal %}
+        {% ifequal gu_level 3%}
+         通过对你所填申请信息的评估，我们发现你的本科学校在国内排名靠前，但在国际申请中不占优势，可以通过提高其他方面的实力加以补偿。
+        {% endifequal %}
+         {% ifequal gu_level 4%}
+         通过对你所填申请信息的评估，我们发现你的本科学校在国内排名靠前，但在国际申请中不占优势，可以通过提高其他方面的实力加以补偿。
+        {% endifequal %}
+         {% ifequal gu_level 5%}
+         通过对你所填申请信息的评估，我们发现你的本科学校在申请中不占优势。可以通过提高其他方面的实力加以补偿。
+        {% endifequal %}
+
+        {% if  not GPA_good and not IELTS_TOEFL_good and not paper_good %}
+        {% else %}
+            你的{% ifequal GPA_level 1 %}<font color="#a52a2a">GPA </font>{% endifequal %}
+            {% ifequal IELTS_TOEFL_level 1 %}<font color="#a52a2a">语言成绩 </font>{% endifequal %}
+            {% ifequal paper_good 1 %}<font color="#a52a2a">科研能力 </font>{% endifequal %}表现较为优异，这将成为你在未来申请路上的核心竞争力!
+        {% endif %}
+        <br><br>
+
+        <font color="#a52a2a">GPA成绩：</font>
+        {% ifequal GPA_level 1 %}
+        经过大数据比对，您的GPA成绩非常优秀，在{{ intention_school }}的往届录取中处于较高水平，这将会大大增加你的竞争优势！<br><br>
+        {% endifequal %}
+        {% ifequal GPA_level 2 %}
+        经过大数据比对，您的GPA成绩优秀，在{{ intention_school }}的往届录取中处于较高水平，这将会增加你的竞争优势！<br><br>
+        {% endifequal %}
+        {% ifequal GPA_level 3 %}
+        经过大数据比对，您的GPA成绩一般，在{{ intention_school }}的往届录取中处于中等水平，该项不能够成为你的竞争点，请在其他方面补足或者刷新成绩！<br><br>
+        {% endifequal %}
+        {% ifequal GPA_level 4 %}
+        经过大数据比对，您的GPA成绩偏低，在申请{{ intention_school }}的往届录取中处于偏下水平，有可能过不了学校的硬性录取条件。建议你刷分提高GPA！<br><br>
+        {% endifequal %}
+        {% ifequal GPA_level 5 %}
+        经过大数据比对，您的GPA成绩太低了，这将对你的申请非常不利，强烈建议你刷分提高成绩！！<br><br>
+        {% endifequal %}
+
+        <font color="#a52a2a">语言成绩：</font>
+        {% ifequal IELTS_TOEFL_level 1 %}
+        您的语言成绩很优秀，达到了{{ intention_school }}的录取条件，并且在往届录取数据中表现突出，该项可以成为你的加分项，增加竞争优势！
+           {% ifequal yt_flag 1 %}
+               分析发现，你的
+               {% ifequal yt_Listening 0 %}听力成绩 {% endifequal %}
+               {% ifequal yt_Speaking 0 %}口语成绩{% endifequal %}
+               {% ifequal yt_Reading 0 %}阅读成绩{% endifequal %}
+               {% ifequal yt_Writing 0 %}写作成绩{% endifequal %}
+               方面成绩偏低，可以在这方面着重加强，从而在语言体现出更加明显优势！
+           {% endifequal %}
+            <br><br>
+        {% endifequal %}
+        {% ifequal IELTS_TOEFL_level 2 %}
+        您的语言成绩较好，达到了{{ intention_school }}的录取条件，在往届录取数据处于中上水平。
+         {% ifequal yt_flag 1 %}
+               分析发现，你的
+               {% ifequal yt_Listening 0 %}听力成绩{% endifequal %}
+               {% ifequal yt_Speaking 0 %}口语成绩 {% endifequal %}
+               {% ifequal yt_Reading 0 %}阅读成绩 {% endifequal %}
+               {% ifequal yt_Writing 0 %} 写作成绩{% endifequal %}
+               方面成绩偏低，如果想要提高语言成绩建议你在这方面着重加强。
+           {% endifequal %}
+            <br><br>
+        {% endifequal %}
+         {% ifequal IELTS_TOEFL_level 3 %}
+        您的语言成绩一般，在{{ intention_school }}的往届录取数据中表现不突出。
+             {% ifequal yt_flag 1 %}
+               分析发现，你的
+               {% ifequal yt_Listening 0 %}听力成绩{% endifequal %}
+               {% ifequal yt_Speaking 0 %}口语成绩 {% endifequal %}
+               {% ifequal yt_Reading 0 %}阅读成绩 {% endifequal %}
+               {% ifequal yt_Writing 0 %} 写作成绩{% endifequal %}
+               方面成绩偏低，如果想要提高语言成绩建议你在这方面着重加强。
+             {% endifequal %}
+             <br><br>
+        {% endifequal %}
+
+        {% ifequal IELTS_TOEFL_level 4 %}
+        您的语言成绩低于一般水平，你所申请的学校{{ intention_school }}对语言成绩有要求，建议您在语言上加以提高。
+            {% ifequal yt_flag 1 %}
+               分析发现，你的
+               {% ifequal yt_Listening 0 %}听力成绩{% endifequal %}
+               {% ifequal yt_Speaking 0 %}口语成绩 {% endifequal %}
+               {% ifequal yt_Reading 0 %}阅读成绩 {% endifequal %}
+               {% ifequal yt_Writing 0 %} 写作成绩{% endifequal %}
+               方面偏低，如果想要提高语言成绩建议你在这方面着重加强。
+           {% endifequal %}
+            <br><br>
+        {% endifequal %}
+
+        <font color="#a52a2a">科研及实践:
+        </font>你发有
+            <font color="#a52a2a">{{ in_paper}}篇</font>国际论文、
+            <font color="#a52a2a">{{ na_paper }}篇</font>国内论文、
+            <font color="#a52a2a">{{ in_patent }}篇</font>国际专利，
+            <font color="#a52a2a">{{ na_patent}}篇</font>国内专利,
+        {% ifequal paper_good 1%}
+            {% ifequal patent_good 1%}
+                你在文章和专利方面的表现很突出，体现出你较强的科研能力。科研能力是导师们比较看重的方面，你在这方面的优势可以给你的申请加分。
+            {% endifequal %}
+            {% ifequal patent_good 0%}
+                你在文章方面的表现很突出，体现出你较强的科研能力。科研能力是导师们比较看重的方面，你在这方面的优势可以给你的申请加分。但是相对于文章你的专利较少，为了增强优势，你可以在这方面加强。
+            {% endifequal %}
+        {% endifequal %}
+
+        {% ifequal paper_good 0%}
+            {% ifequal patent_good 1%}
+                你在文章方面有所欠缺，但是专利方面给出了稍微的补充，体现出你的科研能力。科研能力是导师们比较看重的方面，你在这方面的优势可以给你的申请加分，建议你在文章方面进行加强，争取在正式申请前能够再发文章。
+            {% endifequal %}
+            {% ifequal patent_good 0%}
+                你在文章和专利方面表现不够优秀，科研能力是导师们比较看重的方面，你在这方面欠缺可能会阻碍你的申请。建议你在科研方面加强，争取在正式申请前能够再发文章或者专利。
+            {% endifequal %}
+        {% endifequal %}
+
+        <br><br>
+
+    </label>
+    {% ifequal no_mid 0 %}
+        <h3><strong>建议选择的院校</strong></h3>
+	    <label class="title">我们对您的条件进行了分析，除了您的目标院校，以下院校您也可以考虑申请。</label>
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th>专业</th><th>专业排名</th><th>综合排名</th><th>国家</th><th>院校</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for u in university_m %}
+            <tr><td>{{ u.major }}</td><td>{{ u.rank_major }}</td><td>{{ u.rank_total }}</td><td>{{ country}}</td><td>{{ u.name }}</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endifequal %}
+        <br>
+
+        {% ifequal no_high 0 %}
+            <h3><strong>冲刺院校</strong></h3>
+            <label class="title">当然，如果你想要去更好的学校，通过提升你的成绩或者找到大牛推荐，下面的院校可以作为冲刺选项。</label>
+             <table class="table table-striped table-hover">
+                <thead>
+                <tr>
+                    <th>专业</th><th>专业排名</th><th>综合排名</th><th>国家</th><th>院校</th>
+                </tr>
+                </thead>
+                <tbody>
+                 {% for u in university_h %}
+                <tr><td>{{ u.major }}</td><td>{{ u.rank_major }}</td><td>{{ u.rank_total }}</td><td>{{ country }}</td><td>{{ u.name }}</td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endifequal %}
+        <br>
+
+    {% ifequal no_low 0 %}
+        <h3><strong>保底院校</strong></h3>
+        <label class="title">如果您想要更加有把握，可以申请以下的学校作为保底。</label>
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th>专业</th><th>专业排名</th><th>综合排名</th><th>国家</th><th>院校</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for u in university_l %}
+            <tr><td>{{ u.major }}</td><td>{{ u.rank_major }}</td><td>{{ u.rank_total }}</td><td>{{ country}}</td><td>{{ u.name }}</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endifequal %}
+        <br>
+        <br>
+
+        为保证您的申请顺利达到预期目标，建议您进入<a href="#"><font color="#a52a2a">客服咨询</font></a>或
+        <a href="#"><font color="#a52a2a">购买套餐</font></a>获取更多权益和保障！<br><br>
+        <br><br>
+	</div>
+      <div class="submit"><a href="{% url 'newapp:result' %}">返回继续测评</a></div>
+</form>
+  <p class="frmd"><a href="http://formoid.com/v29.php">javascript form</a> Formoid.com 2.9</p><script type="text/javascript" src="{% static 'from/formoid-solid-green.js' %}"></script>
+<!-- Stop Formoid form-->
+</body>
+</html>

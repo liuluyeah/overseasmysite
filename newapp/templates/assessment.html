@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Preliminary Assessment - Formoid jquery form</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body class="blurBg-false" style="background-color:#EBEBEB">
+
+<!-- Start Formoid form-->
+<link rel="stylesheet" href="/static/form/formoid-solid-green.css" type="text/css" />
+<script type="text/javascript" src="/static/form/jquery.min.js"></script>
+<script type="text/javascript" src="/static/form/jquery-3.1.1.js"></script>
+<script type="text/javascript" src="/static/form/formoid-solid-green.js"></script>
+
+<script>
+$(document).ready(function() {
+    $("#target_country").change(function () {
+        var targetCountrystr = $(this).val();
+        $("#target_university").empty();
+        if (targetCountrystr=="0") {
+            $("#target_university").append($("<option value='-1'>请选择国家</option>"));
+            return;
+        }
+        var targetCountryName = $("#target_country").val().toString();
+        var options = {
+            url: "/newapp/country/",
+            type: "POST",
+            data: {
+                targetCountry: targetCountryName
+            },
+            dataType:"json",
+            traditional: true,
+            async: true,
+            success: function (data) {
+                $("#target_university").append($("<option value='0'>" + "--- 学校 ---"+ "</option>"));
+
+                var universitynName = data.universityName;
+                var universitycategoryLevel=data.universitycategoryLevel;
+                for (var i = 0; i < universitynName.length; i++) {
+                    $("#target_university").append($("<option value='" + universitynName[i] + "'>" + universitynName[i] + "</option>"));
+                }
+                if (universityName.length == 0) {
+                    $("#target_university").append($("<option value='-1'>请选择国家</option>"));
+                }
+            },
+            error: function (data) {
+            }
+        }
+        $.ajax(options);
+    });
+
+    $("#target_university").change(function(){
+        university=$("#target_university").val();
+        $("#intention_schoolName").val(university);
+        n=$("#intention_schoolName").val();
+    });
+
+});
+</script>
+<script language="JavaScript">
+ javascript:window.history.forward(1);
+ </script>
+<form action="/newapp/result/" class="formoid-solid-green" style="background-color:#FFFFFF;font-size:14px;font-family:'Roboto',Arial,Helvetica,sans-serif;color:#34495E;max-width:960px;min-width:150px" method="POST">
+    <div class="title"><h2>初步测评</h2>
+    </div>
+	<div class="element-separator"><hr><h3 class="section-break-title">基本信息</h3></div>
+
+	<div class="element-name"><label class="title"></label><span class="nameFirst"><input placeholder="姓" type="text" size="8" name="name1[first]" /><span class="icon-place"></span></span><span class="nameLast"><input placeholder="名" type="text" size="14" name="name1[last]" /><span class="icon-place"></span></span></div>
+
+	<div class="element-phone">
+        <label class="title"><span class="required">*</span></label>
+        <div class="item-cont">
+            <input class="large" type="tel" pattern="[+]?[\.\s\-\(\)\*\#0-9]{3,}" maxlength="24" name="phone" required="required" placeholder="手机" value=""/>
+            <span class="icon-place"></span>
+        </div>
+    </div>
+
+	<div class="element-separator"><hr><h3 class="section-break-title">你的意向</h3></div>
+
+	<div class="element-select">
+        <label class="title"><span class="required">*</span></label>
+        <div class="item-cont">
+            <div class="large">
+            <span>
+                <select  name="intention_country"  required="required" id="target_country">
+                    <option value="0">--- 国家 ---</option>
+                    {% for coun in countries %}
+                    <option value="{{ coun.name }}">{{ coun.name }}</option>
+                    {% endfor %}
+                </select><i></i>
+                <span class="icon-place"></span>
+            </span>
+            </div>
+        </div>
+    </div>
+
+	<div class="element-select"><div class="item-cont"><div class="large"><span>
+        <select name="intention_school" id="target_university">
+            <option value="0" selected = "selected" >--- 学校 ---</option>
+            {% for u in univer %}
+		    <option value="{{ u }}">{{ u.name }}</option>
+            {% endfor %}
+        </select><i></i><span class="icon-place"></span></span></div></div></div>
+
+    <div class="element-select">
+        <label class="title"><span class="required">*</span></label>
+        <div class="item-cont">
+            <div class="large">
+            <span>
+                <select name="academic_interest" required="required">
+                    <option value="" selected = "selected">--- 专业 ---</option>
+                    <option value="EE">电子工程</option>
+                    <option value="CS">计算机科学</option>
+                </select><i></i>
+                <span class="icon-place"></span>
+            </span>
+        </div>
+        </div>
+    </div>
+
+	<div class="element-separator"><hr><h3 class="section-break-title">教育背景</h3></div>
+
+	<div class="element-select">
+        <label class="title"><span class="required">*</span></label>
+        <div class="item-cont">
+            <div class="large">
+             <span>
+                <select name="graduate_school" required="required">
+                    <option value="">--- 毕业院校---</option>
+                     {% for graduateUniver in gu %}
+                    <option value="{{ graduateUniver.gu_level}}">{{ graduateUniver.name }}</option>
+                     {% endfor %}
+                </select>
+                <span class="icon-place"></span>
+             </span>
+            </div>
+        </div>
+    </div>
+
+	<div class="element-input">
+        <label class="title"><span class="required">*</span></label>
+        <div class="item-cont"><input class="large" type="text" name="GPA" required="required" placeholder="GPA"/>
+            <span class="icon-place"></span>
+        </div>
+    </div>
+
+    <div class="element-separator">请输入你的雅思/托福成绩：</div>
+	<div class="element-input">
+        <label class="title"></label>
+	    <div class="item-cont">
+            <span class="required">*</span>
+	        <input class="medium" type="text" name="IELTS_TOEFL"  required="required" placeholder="总分"/>
+		    <span class="icon-place"></span>
+	    </div>
+	</div>
+
+    <div class="element-input">
+        <label class="title"></label>
+	    <div class="item-cont">
+            <span class="required">*</span>
+	        <input class="medium" type="text" name="YT_Listening"  required="required" placeholder="听力"/>
+		    <span class="icon-place"></span>
+	    </div>
+	</div>
+    <div class="element-input">
+        <label class="title"></label>
+	    <div class="item-cont">
+            <span class="required">*</span>
+	        <input class="medium" type="text" name="YT_Speaking"  required="required" placeholder="口语"/>
+		    <span class="icon-place"></span>
+	    </div>
+	</div>
+     <div class="element-input">
+        <label class="title"></label>
+	    <div class="item-cont">
+            <span class="required">*</span>
+	        <input class="medium" type="text" name="YT_Reading"  required="required" placeholder="阅读"/>
+		    <span class="icon-place"></span>
+	    </div>
+	</div>
+     <div class="element-input">
+        <label class="title"></label>
+	    <div class="item-cont">
+            <span class="required">*</span>
+	        <input class="medium" type="text" name="YT_Writing"  required="required" placeholder="写作"/>
+		    <span class="icon-place"></span>
+	    </div>
+	</div>
+
+	<br>
+
+	<div class="element-separator">请输入你的GRE成绩：</div>
+	<div class="element-input">
+	   <div class="item-cont">
+	      <input class="medium" type="text" name="GRE_Total" placeholder="总分"/>
+		  <span class="icon-place"></span>
+	   </div>
+	</div>
+
+	<div class="element-input">
+        <label class="title"></label>
+        <div class="item-cont">
+            <input class="medium" type="text" name="GRE_VR" placeholder="Verbal Reasoning"/>
+            <span class="icon-place"></span>
+        </div>
+    </div>
+
+	<div class="element-input"><label class="title"></label><div class="item-cont"><input class="medium" type="text" name="GRE_QR" placeholder="Quantitative Reasoning"/><span class="icon-place"></span></div></div>
+	<div class="element-input"><label class="title"></label><div class="item-cont"><input class="medium" type="text" name="GER_AW" placeholder="Analytical Writing"/><span class="icon-place"></span></div></div>
+
+    <br>
+	<div class="element-separator">请输入你所发表的论文的<strong>篇数</strong>：</div>
+	<div class="element-input"><label class="title"></label><div class="item-cont"><input class="large" type="text" name="In_Papers" placeholder="国际期刊"/><span class="icon-place"></span></div></div>
+	<div class="element-input"><label class="title"></label><div class="item-cont"><input class="large" type="text" name="Na_Papers" placeholder="其他期刊"/><span class="icon-place"></span></div></div>
+	<br>
+    <div class="element-separator">请输入你所发表的专利的<strong>篇数</strong>：</div>
+	<div class="element-input"><label class="title"></label><div class="item-cont"><input class="large" type="text" name="In_Patents" placeholder="国际专利"/><span class="icon-place"></span></div></div>
+	<div class="element-input"><label class="title"></label><div class="item-cont"><input class="large" type="text" name="Na_Patents" placeholder="国内专利"/><span class="icon-place"></span></div></div>
+	<br>
+	<div class="element-textarea"><label class="title"></label><div class="item-cont"><textarea class="small" name="Research" cols="20" rows="5" placeholder="简单描述你的科研经历"></textarea><span class="icon-place"></span></div></div>
+	<div class="element-textarea"><label class="title"></label><div class="item-cont"><textarea class="small" name="Placement" cols="20" rows="5" placeholder="介绍你的工作/实习经验"></textarea><span class="icon-place"></span></div></div>
+	<div class="element-textarea"><label class="title"></label><div class="item-cont"><textarea class="small" name="Social_Practice" cols="20" rows="5" placeholder="简述你做过的社会实践"></textarea><span class="icon-place"></span></div></div>
+	<div class="element-textarea"><label class="title"></label><div class="item-cont"><textarea class="small" name="Specilty" cols="20" rows="5" placeholder="你的特长"></textarea><span class="icon-place"></span></div></div>
+	<div class="element-radio"><label class="title">推荐信</label>	<div class="column column1"><label><input class="required" type="radio" name="Recommendation" value="1" /><span>你的推荐者认识对方教授</span></label><label><input type="radio" name="Recommendation" value="0" /><span>你的推荐者不认识对方教授</span></label></div><span class="clearfix"></span>
+</div>
+<div class="submit"><input type="submit" value="Submit"/></div>
+</form><p class="frmd">
+
+    <a href="http://formoid.com/v29.php">html contact form</a> Formoid.com 2.9</p><script type="text/javascript" src="formoid4_files/formoid1/formoid-solid-green.js"></script>
+
+<input type="hidden" id="intention_schoolName" name="intention_schoolName" value="">
+<!-- Stop Formoid form-->
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load staticfiles %}
+<head>
+    <meta charset="UTF-8">
+    <title>mysite</title>
+    <link rel="stylesheet" href="{% static 'form/formoid-solid-green.css' %}" type="text/css" />
+    <script type="text/javascript" src="{% static 'form/formoid-solid-green.js'%}"></script>
+    <script type="text/javascript" src="{% static 'form/jquery.min.js'%}"></script>
+    <script src = "{% static 'js/jquery-3.1.1.js'%}"></script>
+    <script src = "{% static 'js/jquery.min.js'%}"></script>
+    <link href="{% static 'css/bootstrap.css'%}" rel="stylesheet"/>
+    <link href="{% static 'css/bootstrap.min.css'%}"/>
+    <script src = "{% static 'js/bootstrap.js'%}"></script>
+    <script src = "{% static 'js/bootstrap.min.js'%}"></script>
+
+    <script>
+        function submit1()//
+        {
+            var form1=document.getElementById("form1");
+            var choice = $('input[name="radio"]:checked').val();
+            if(choice =="本科生"){
+                form1.action="{% url 'newapp:result' %}";                //设置提交路径
+            }else{
+                form1.action="{% url 'newapp:highResult' %}";                //设置提交路径
+                alert(val)
+            }
+
+            form1.submit();                            //提交
+        }
+    </script>
+
+</head>
+<body class="blurBg-false" style="background-color:#EBEBEB">
+  <!-- Start Formoid form-->
+<form class="formoid-solid-green" id="form1" style="background-color:#FFFFFF;font-size:14px;
+    font-family:'Roboto',Arial,Helvetica,sans-serif;color:#34495E;max-width:960px;min-width:150px" method="post">
+<div class="title"><h2>欢迎使用留学测评系统！</h2></div>
+
+<div style="font-size:20px">
+<label>
+         本系统是留学初步测评系统，用于向有留学意向的同学提供免费测评服务。我们将根据您的教育背景，语言成绩，留学意向等情况，基于往年申请大数据，
+		 对您的情况进行详细分析，给出相应的比较中肯的建议，并给出一些推荐院校，希望能够帮助您在出国留学的路上更加顺畅！
+ </label>
+ </div>
+	<div class="element-radio" style="height:500px;">
+	<div  style="height:100px;"></div>
+	<label class="title">请选择您的身份：<span class="required">*</span></label>
+        <div class="column column2"><label><input type="radio" name="radio" value="高中生" required="required"/>
+            <span>高中生</span></label></div><span class="clearfix"></span>
+		<div class="column column2"><label>
+            <input type="radio" name="radio" value="本科生" required="required"/><span>本科生</span></label></div>
+        <span class="clearfix"></span>
+</div>
+<div class="submit"><input type="submit"  onclick="submit1()" value="Submit"/></div></form><p class="frmd"><a href="http://formoid.com/v29.php">form builder</a> Formoid.com 2.9</p><script type="text/javascript" src="formoid6_files/formoid1/formoid-solid-green.js"></script>
+<!-- Stop Formoid form-->
+
+</body>
+</html>
