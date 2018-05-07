@@ -1,6 +1,6 @@
 # overseasmysite 功能说明
 
-基于djingo框架开发的留学测评网站
+基于django框架开发的留学测评网站
 
 分为高中、本科测评两部分
 
