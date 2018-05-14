@@ -1,4 +1,8 @@
-# overseasmysite 功能说明
+# 声明
+
+本软件仅供学习交流，如作他用所承受的法律责任一概与作者无关（下载使用即代表你同意上述观点）
+
+# 留学测评网站功能说明
 
 基于django框架开发的留学测评网站
 
@@ -10,7 +14,7 @@
 
 pycharm + python3 + django 
 
-网址： http://127.0.0.1:8001/newapp/index/ 
+本地运行网址： http://127.0.0.1:8001/newapp/index/ 
 
 服务器线上网址： http://www.deepcomments.com:9200/newapp/index/
  
@@ -26,6 +30,4 @@ pycharm + python3 + django
 
 ![本科生留学测评结果](https://github.com/liuluyeah/overseasmysite/blob/master/%E6%9C%AC%E7%A7%91%E7%94%9F%E7%95%99%E5%AD%A6%E6%B5%8B%E8%AF%84%E7%BB%93%E6%9E%9C%20-%20http___www.deepcomments.com_9200_newapp_result_.png)
 
-# 声明
 
-本软件仅供学习交流，如作他用所承受的法律责任一概与作者无关（下载使用即代表你同意上述观点）
